@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Curved Plane Animation</title>
+  <meta charset="UTF-8" />
+  <title>Plane Path with Rotation</title>
   <style>
     body {
       margin: 0;
@@ -28,38 +29,46 @@
     }
     .plane {
       width: 30px;
-      transform-origin: center;
+      height: 30px;
     }
+    
   </style>
 </head>
 <body>
+  <div class="map-container">
+    <img src="https://assets.onecompiler.app/43kew3pm6/3y5x8jr6s/USMap.png" alt="Map">
+    <svg viewBox="0 0 447.2 357.6" preserveAspectRatio="xMidYMid meet">
+      <!-- ✏️ Change this path to match your cities -->
+      <path id="flightPath" d="M80,200 Q220,100 392,120" fill="none" stroke="none" />
 
-<div class="map-container">
-  <img src="USMap.png" alt="Map">
-  <svg viewBox="0 0 447.2 357.6" preserveAspectRatio="xMidYMid meet">
-    <!-- Curved path from Point A to Point B -->
-    <path id="flightPath" d="M80,200 Q216,96 392,120" fill="none" stroke="none" />
+      <!-- Plane image -->
+      <image id="plane" href="forwardplane.png" href="backwardplane.png" class="plane" width="30" height="30" />
+    </svg>
+  </div>
 
-    <!-- Plane image following the path -->
-    <image id="plane" href="paperplanenew.png" class="plane" width="30" height="30"/>
-  </svg>
-</div>
-
-<script>
+  <script>
   const path = document.getElementById("flightPath");
   const plane = document.getElementById("plane");
 
   const totalLength = path.getTotalLength();
-  let direction = 1;
   let progress = 0;
+  let direction = 1;
 
-  // Set initial position
-  const startPt = path.getPointAtLength(progress);
-  const nextPt = path.getPointAtLength(progress + 1);
-  const initialAngle = Math.atan2(nextPt.y - startPt.y, nextPt.x - startPt.x) * (180 / Math.PI);
-  plane.setAttribute("x", startPt.x - 15);
-  plane.setAttribute("y", startPt.y - 15);
-  plane.setAttribute("transform", `rotate(${initialAngle}, ${startPt.x}, ${startPt.y})`);
+  function updatePlanePosition() {
+    const pt = path.getPointAtLength(progress);
+
+    // Center the image over the point
+    const planeSize = 30;
+    plane.setAttribute("x", pt.x - planeSize / 2);
+    plane.setAttribute("y", pt.y - planeSize / 2);
+
+    // Update plane image based on direction
+    if (direction === 1) {
+      plane.setAttribute("href", "forwardplane.png");
+    } else {
+      plane.setAttribute("href", "backwardplane.png");
+    }
+  }
 
   function animate() {
     progress += direction * 2;
@@ -68,17 +77,11 @@
       direction *= -1;
     }
 
-    const pt = path.getPointAtLength(progress);
-    const nextPt = path.getPointAtLength(progress + direction * 1);
-    const angle = Math.atan2(nextPt.y - pt.y, nextPt.x - pt.x) * (180 / Math.PI);
-
-    plane.setAttribute("x", pt.x - 15);
-    plane.setAttribute("y", pt.y - 15);
-    plane.setAttribute("transform", `rotate(${angle}, ${pt.x}, ${pt.y})`);
-
+    updatePlanePosition();
     requestAnimationFrame(animate);
   }
 
+  updatePlanePosition();
   animate();
 </script>
 

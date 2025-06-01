@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plane Path with Rotation</title>
+  <title>Is This a Date?</title>
   <style>
     body {
       margin: 0;
@@ -38,12 +38,9 @@
   <div class="map-container">
     <img src="USMap.png" alt="Map">
     <svg viewBox="0 0 447.2 357.6" preserveAspectRatio="xMidYMid meet">
-      <!-- ✏️ Change this path to match your cities -->
-      <path id="flightPath" d="M65,200 Q220,100 385,117" fill="none" stroke="none" />
-
+      <path id="flightPath" d="M65,200 Q220,100 384,117" fill="none" stroke="none" />
       <image href="heart.png" x="65" y="200" width="10" height="10" />
-      <image href="heart.png" x="385" y="117" width="10" height="10" />
-      <!-- Plane image -->
+      <image href="heart.png" x="384" y="117" width="10" height="10" />
       <image id="plane" href="forwardplane.png" href="backwardplane.png" class="plane" width="30" height="30" />
     </svg>
   </div>
@@ -59,12 +56,10 @@
   function updatePlanePosition() {
     const pt = path.getPointAtLength(progress);
 
-    // Center the image over the point
     const planeSize = 30;
     plane.setAttribute("x", pt.x - planeSize / 2);
     plane.setAttribute("y", pt.y - planeSize / 2);
-
-    // Update plane image based on direction
+    
     if (direction === 1) {
       plane.setAttribute("href", "forwardplane.png");
     } else {

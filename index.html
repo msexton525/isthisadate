@@ -108,8 +108,7 @@
   <p id="countdown">Countdown: calculating...</p>
 
   <div class="button-container">
-    <button onclick="window.location.href='anotherpage.html'"
-      Click Here for a Surprise
+    <button onclick="RandomGames()"
       style="
       background-color: white;
       color: red;
@@ -184,5 +183,21 @@
 
     updateCountdown();
   </script>
+
+  <!--Random Games--->
+  <script>
+  function RandomGames() {
+    const pages = [
+      'page1.html',
+      'page2.html',
+      'page3.html'
+    ];
+
+    const randomIndex = Math.floor(Math.random() * pages.length);
+    const randomPage = pages[randomIndex];
+
+    window.location.href = randomPage;
+  }
+</script>
 </body>
 </html>

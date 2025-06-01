@@ -36,7 +36,7 @@
           color: black;
       }
       #words {
-          margin: 50px;
+          margin: 50px auto;
           width: 300px;
           padding: 10px;
           background-color: whitesmoke;
@@ -75,7 +75,7 @@
 <body>
     <center><h1>Word Search Puzzle </h1></center>
     <div id="grid" class="grid"></div>
-    <div style="text-align: center; margin-top: 20px; font-family: Courier New"; background-color: white;>
+    <div style="text-align: center; margin-top: 20px; font-family: Courier New;">
         <button onclick="submitSelection()">Submit Word</button>
     </div>
     <div id="words">
@@ -83,17 +83,17 @@
         <ul id="wordList"></ul>
     </div>
     <center>
-        <div id="modal" class="modal" style="text-align: center";>
+        <div id="modal" class="modal">
             <h2>Congratulations, You Found Every Word/Phrase!</h2>
         </div>
     </center>
     <script>
-      const allWords = ['SNAILTIME', 'LOVE', 'LILBLANKBOY', 'BABY', 'CUDDLES', 'BITER', 'FUNK', 'HANDSOME', 'ACAPPELLA', 'SOHIGHSCHOOL' , 'DAYENU',
-                       'DANCEMONKEY', 'WIGGLE', 'BESHERT', 'OUTLAWS', 'CIVPRO', 'GLAD', 'MUNGER', 'WICKED',
-                       'ISTHISADATE', 'CRUTCHIE', 'LAWREVUE', 'NELLIE', 'CHEESECAKE', 'DOJ', 'BUILDABEAR', 'NEWHAVEN',
-                       'YALE', 'PROM', 'MADAMSECRETARY', 'BABKA', 'ANXIETY', 'LETTEROFTHEDAY', 'CROD', 'BOSTON',
-                        'LOSANGELES', 'WASHINGTONDC', 'BERNICE', 'LILA', 'BLOUSE', 'CHIPWRANGLER', 'GAMEPIGEON', 'PLANES', 'LAWSCHOOL', 
-                        'HAVERFORD', 'EMILY', 'HOLYCROSS', 'LUCY', 'MOCKTRIAL', 'LOSTSEAL'];
+      const allWords = ['SNAILTIME', 'LOVE', 'BABY', 'CUDDLES', 'BITER', 'FUNK', 'HANDSOME', 'ACAPPELLA', 'DAYENU',
+                       'WIGGLE', 'BESHERT', 'OUTLAWS', 'CIVPRO', 'GLAD', 'MUNGER', 'WICKED',
+                       'ITWASADATE', 'CRUTCHIE', 'LAWREVUE', 'NELLIE', 'CHEESECAKE', 'DOJ', 'NEWHAVEN',
+                       'YALE', 'PROM', 'BABKA', 'ANXIETY', 'CROD', 'BOSTON', 'LOSANGELES', 'BERNICE', 
+                        'LILA', 'BLOUSE', 'GAMEPIGEON', 'PLANES', 'LAWSCHOOL', 'HAVERFORD', 'EMILY', 
+                        'HOLYCROSS', 'LUCY', 'MOCKTRIAL', 'LOSTSEAL'];
       const selectedWords = [];
       while (selectedWords.length < 5) {
           const word = allWords[Math.floor(Math.random() * allWords.length)];

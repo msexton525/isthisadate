@@ -2,23 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Is This a Date?</title>
   <style>
     body {
       margin: 0;
       background-color: midnightblue;
+      font-family: "Courier New", monospace;
     }
+
+    h2 {
+      text-align: center;
+      color: white;
+      margin-top: 35px;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
     .map-container {
       position: relative;
-      width: 447.2px;
-      height: 357.6px;
+      width: 90vw;
+      max-width: 447.2px;
+      aspect-ratio: 447.2 / 357.6;
       margin: 0 auto;
     }
+
     .map-container img {
       width: 100%;
       height: 100%;
       display: block;
     }
+
     svg {
       position: absolute;
       top: 0;
@@ -26,110 +40,142 @@
       width: 100%;
       height: 100%;
     }
+
     .plane {
       width: 30px;
       height: 30px;
     }
-    
+
+    #countdown {
+      text-align: center;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .button-container button {
+      padding: 10px 20px;
+      background-color: white;
+      color: red;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      h2 {
+        font-size: 1.2rem;
+        margin-top: 20px;
+      }
+
+      #countdown {
+        font-size: 1rem;
+      }
+
+      .plane {
+        width: 20px;
+        height: 20px;
+      }
+
+      .button-container button {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+      }
+    }
   </style>
 </head>
 <body>
-   <h2 style="text-align: center; color: white; margin-top: 35px; font-family: Courier New; font-weight: bold">
-  Counting the Moments Until We're Reunited
-  </h2>
+  <h2>Counting the Moments Until We're Reunited</h2>
+
   <div class="map-container">
     <img src="USMap.png" alt="Map">
     <svg viewBox="0 0 447.2 357.6" preserveAspectRatio="xMidYMid meet">
       <path id="flightPath" d="M65,200 Q220,100 384,117" fill="none" stroke="none" />
       <image href="heart.png" x="65" y="200" width="10" height="10" />
       <image href="heart.png" x="384" y="117" width="10" height="10" />
-      <image id="plane" href="forwardplane.png" href="backwardplane.png" class="plane" width="30" height="30" />
+      <image id="plane" href="forwardplane.png" class="plane" width="30" height="30" />
     </svg>
   </div>
-  <p id="countdown" style="text-align: center; color: white; font-family: Courier New; font-size: 25px; font-weight: bold;">
- Countdown: calculating...
-  </p>
-  <div style="text-align: center; margin-top: 30px;">
-    <button onclick="window.location.href='anotherpage.html'" style="
-      padding: 10px 20px;
-      margin-top: 20px;
-      background-color: white;
-      color: red;
-      font-family: Courier New;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    ">
+
+  <p id="countdown">Countdown: calculating...</p>
+
+  <div class="button-container">
+    <button onclick="window.location.href='anotherpage.html'">
       Click Here for a Surprise
     </button>
   </div>
 
   <!--Flight Animation Script--->
   <script>
-  const path = document.getElementById("flightPath");
-  const plane = document.getElementById("plane");
+    const path = document.getElementById("flightPath");
+    const plane = document.getElementById("plane");
 
-  const totalLength = path.getTotalLength();
-  let progress = 0;
-  let direction = 1;
+    const totalLength = path.getTotalLength();
+    let progress = 0;
+    let direction = 1;
 
-  function updatePlanePosition() {
-    const pt = path.getPointAtLength(progress);
+    function updatePlanePosition() {
+      const pt = path.getPointAtLength(progress);
+      const planeSize = 30;
+      plane.setAttribute("x", pt.x - planeSize / 2);
+      plane.setAttribute("y", pt.y - planeSize / 2);
 
-    const planeSize = 30;
-    plane.setAttribute("x", pt.x - planeSize / 2);
-    plane.setAttribute("y", pt.y - planeSize / 2);
-    
-    if (direction === 1) {
-      plane.setAttribute("href", "forwardplane.png");
-    } else {
-      plane.setAttribute("href", "backwardplane.png");
+      if (direction === 1) {
+        plane.setAttribute("href", "forwardplane.png");
+      } else {
+        plane.setAttribute("href", "backwardplane.png");
+      }
     }
-  }
 
-  function animate() {
-    progress += direction * 2;
+    function animate() {
+      progress += direction * 2;
 
-    if (progress >= totalLength || progress <= 0) {
-      direction *= -1;
+      if (progress >= totalLength || progress <= 0) {
+        direction *= -1;
+      }
+
+      updatePlanePosition();
+      requestAnimationFrame(animate);
     }
 
     updatePlanePosition();
-    requestAnimationFrame(animate);
-  }
+    animate();
+  </script>
 
-  updatePlanePosition();
-  animate();
-</script>
+  <!--Countdown Script--->
+  <script>
+    const countdownEl = document.getElementById("countdown");
+    const targetDate = new Date("2025-06-19T09:00:00Z");
 
-<!--Countdown Script--->
-<script>
-  const countdownEl = document.getElementById("countdown");
-  const targetDate = new Date("2025-06-19T09:00:00Z"); 
+    function updateCountdown() {
+      const now = new Date();
+      const diff = targetDate - now;
 
-  function updateCountdown() {
-    const now = new Date();
-    const diff = targetDate - now;
+      if (diff <= 0) {
+        countdownEl.textContent = "The day has arrived!";
+        return;
+      }
 
-    if (diff <= 0) {
-      countdownEl.textContent = "The day has arrived!";
-      return;
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      countdownEl.textContent =
+        `${days} days, ${hours} hours, ${minutes} minutes, & ${seconds} seconds`;
+
+      setTimeout(updateCountdown, 1000);
     }
 
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-
-    countdownEl.textContent =
-      `${days} days, ${hours} hours, ${minutes} minutes, & ${seconds} seconds`;
-
-    setTimeout(updateCountdown, 1000);
-  }
-
-  updateCountdown();
-</script>
-
+    updateCountdown();
+  </script>
 </body>
 </html>

@@ -2,9 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Plane Animation</title>
+  <meta charset="UTF-8">
+  <title>Curved Plane Animation</title>
   <style>
     body {
       margin: 0;
@@ -14,53 +13,73 @@
       align-items: center;
       height: 100vh;
     }
-
     .map-container {
       position: relative;
       width: 447.2px; /* adjust as needed */
       height: 357.6px; /* adjust as needed */
-      background-image: url('USMap.png');
-      background-size: cover;
-      background-position: center;
     }
-
-    .plane {
+    .map-container img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    svg {
       position: absolute;
-      width: 30px; /* adjust plane size */
-      top: 200px;  /* starting Y position */
-      left: 64px; /* starting X position */
-      transition: left 3s linear, top 3s linear;
+      top: 0;
+      left: 0;
+    }
+    .plane {
+      width: 30px;
+      transform-origin: center;
     }
   </style>
 </head>
 <body>
 
 <div class="map-container">
-  <img id="plane" class="plane" src="paperplane.png" alt="plane">
+  <img src="US.png" alt="Map">
+  <svg width="447.2" height="357.6">
+    <!-- Curved path from Point A to Point B -->
+    <path id="flightPath" d="M80,200 Q400,100 490,300" fill="none" stroke="white" stroke-width="2"/>
+
+    <!-- Plane image following the path -->
+    <image id="plane" href="paperplanenew.png" class="plane" x="0" y="0" width="30" height="30"/>
+  </svg>
 </div>
 
 <script>
-  const plane = document.getElementById('plane');
+  const path = document.getElementById("flightPath");
+  const plane = document.getElementById("plane");
 
-  // Coordinates for two destinations
-  const posA = { left: 64, top: 200 };
-  const posB = { left: 392, top: 120 };
+  let length = path.getTotalLength();
+  let direction = 1;
+  let progress = 0;
 
-  let goingToB = true;
-
-  function movePlane() {
-    if (goingToB) {
-      plane.style.left = posB.left + 'px';
-      plane.style.top = posB.top + 'px';
-    } else {
-      plane.style.left = posA.left + 'px';
-      plane.style.top = posA.top + 'px';
+  function animate() {
+    // Move forward or backward along the path
+    progress += direction * 2; // Speed of the plane
+    if (progress >= length || progress <= 0) {
+      direction *= -1; // Reverse direction at end
     }
-    goingToB = !goingToB;
+
+    // Get current and next points
+    const pt = path.getPointAtLength(progress);
+    const nextPt = path.getPointAtLength(progress + direction * 1);
+
+    // Move plane to current position
+    plane.setAttribute("x", pt.x - 20);
+    plane.setAttribute("y", pt.y - 20);
+
+    // Rotate to face the direction
+    const angle = Math.atan2(nextPt.y - pt.y, nextPt.x - pt.x) * (180 / Math.PI);
+    plane.setAttribute("transform", `rotate(${angle}, ${pt.x}, ${pt.y})`);
+
+    requestAnimationFrame(animate);
   }
 
-  setInterval(movePlane, 3000); // every 3 seconds
+  animate();
 </script>
 
 </body>
 </html>
+

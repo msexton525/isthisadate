@@ -48,7 +48,11 @@
   <h2 style="text-align: center; color: white; margin-top: 40px; font-family: Courier New;">
   Counting the Days Until We're Reunited
   </h2>
+  <p id="countdown" style="text-align: center; color: white; font-family: Courier New; font-size: 35px; font-weight: bold;">
+ Countdown: calculating...
+  </p>
 
+  <!--Flight Animation Script--->
   <script>
   const path = document.getElementById("flightPath");
   const plane = document.getElementById("plane");
@@ -84,6 +88,34 @@
 
   updatePlanePosition();
   animate();
+</script>
+
+<!--Countdown Script--->
+<script>
+  const countdownEl = document.getElementById("countdown");
+  const targetDate = new Date("2025-06-19T09:00:00Z"); 
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+      countdownEl.textContent = "The day has arrived!";
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    countdownEl.textContent =
+      `${days} days, ${hours} hours, ${minutes} minutes, & ${seconds} seconds`;
+
+    setTimeout(updateCountdown, 1000);
+  }
+
+  updateCountdown();
 </script>
 
 </body>

@@ -1,36 +1,66 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My Site</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Plane Animation</title>
   <style>
     body {
-      background-color: midnightblue;
       margin: 0;
-      padding: 0;
-      color: white;
-      font-family: Georgia;
-      text-align: center;
+      background-color: midnightblue;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
 
-    .container {
-      padding-top: 50px;
+    .map-container {
+      position: relative;
+      width: 447.2px; /* adjust as needed */
+      height: 357.6px; /* adjust as needed */
+      background-image: url('USMap.png');
+      background-size: cover;
+      background-position: center;
     }
 
-    img {
-      display: block;
-      margin: 0 auto;
-      max-width: 60%;
-      height: auto;
+    .plane {
+      position: absolute;
+      width: 30px; /* adjust plane size */
+      top: 160px;  /* starting Y position */
+      left: 64px; /* starting X position */
+      transition: left 3s linear, top 3s linear;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Welcome to My Site</h1>
-    <img src="USMap.png" alt="A beautiful map" width="447.2" height="357.6">
-     <h1>Days Until We're Reunited</h1>
-  </div>
+
+<div class="map-container">
+  <img id="plane" class="plane" src="paperplane.png" alt="plane">
+</div>
+
+<script>
+  const plane = document.getElementById('plane');
+
+  // Coordinates for two destinations
+  const posA = { left: 64, top: 160 };
+  const posB = { left: 392, top: 240 };
+
+  let goingToB = true;
+
+  function movePlane() {
+    if (goingToB) {
+      plane.style.left = posB.left + 'px';
+      plane.style.top = posB.top + 'px';
+    } else {
+      plane.style.left = posA.left + 'px';
+      plane.style.top = posA.top + 'px';
+    }
+    goingToB = !goingToB;
+  }
+
+  setInterval(movePlane, 3000); // every 3 seconds
+</script>
+
 </body>
 </html>
-
